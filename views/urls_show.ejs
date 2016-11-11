@@ -2,10 +2,8 @@
 <p>ShortURL: <b> <%= shortURL %></b> </p>
 
 <p>How would you like to edit this URL, my liege?</p>
-<p>My Favourite Sport Is: <%= myFavouriteSport %></p>
 
 <form method="POST" action="/urls/<%= updatedURL %>">
-  <input type="text" value="" name="myParam"></input>
   <input type="text" value="<%= longURL %>" name="longURL"></input>
   <input type="submit" value="Update"></input>
 </form>

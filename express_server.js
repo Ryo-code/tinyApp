@@ -5,7 +5,6 @@ const PORT = process.env.PORT || 8080;
 
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
-
 app.set("view engine", "ejs");
 
 let urlDatabase = {
@@ -44,9 +43,7 @@ app.get("/urls/new", (req, res) => {
 app.post("/urls/create", (req, res) => {
   let shortURL = generateRandomString();
   urlDatabase[shortURL] = req.body.longURL;
-  // console.log("Now, the full database:", urlDatabase);
-  // console.log("111111 ShortURL = ", shortURL)
-  res.redirect(`/urls/${shortURL}`);
+  res.redirect(`/urls`);
 });
 
 app.post("/urls/:shortURL/delete", (req, res) => {
@@ -55,10 +52,8 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 });
 
 app.get("/u/:shortURL", (req, res) => {
-  // console.log("333333333 req.params ------->", req.params);
   let shortURL = req.params['shortURL'];
   let longURL = urlDatabase[shortURL];
-  // console.log("222222 ShortURL = ", shortURL);
   res.redirect(longURL);
 });
 
@@ -67,16 +62,11 @@ app.get("/urls/:id", (req, res) => {
     shortURL: req.params.id,
     longURL: urlDatabase[req.params.id],
     updatedURL: req.params.id,
-    myFavouriteSport: "Hockey"
   });
 });
 
 app.post("/urls/:id", (req, res) => {
   urlDatabase[req.params.id] = req.body.longURL;
-  console.log('BODY', req.body);
-  console.log('PARAMS', req.params);
-  // console.log("44444444 req.body ---->", req.body);
-  // console.log(req.params.id);
   res.redirect(`/urls`);
 });
 

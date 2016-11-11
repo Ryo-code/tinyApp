@@ -1,23 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <% include ../views/partials/_header %>
-
-  <title>TinyApp</title>
-  <!-- /*<style>
-    body{
-      background-image: url("BGimage.jpeg");
-    }
-  </style>*/ -->
+    <title>TinyApp</title>
 
 </head>
 
 <body>
 
-  <h1>Tiny App... from urls_index.ejs</h1>
-
-  <a href="/urls/insert-LINK-here!"> Edit</a>
-
+  <ul>
+    <% for(key in urls) { %>
+      <li>
+        <form method="POST" action="/urls/<%= key %>/delete">
+          <%= key %> →
+            <%= urls[key] %>
+              <a href="/urls/<%= key %>"> Edit</a>
+              <input type="submit" value="Delete"></input>
+        </form>
+        <br>
+      </li>
+      <% } %>
+  </ul>
+  <p> Create a new <a href="/urls/new"> shortURL</a> here!</p>
 
 </body>
+
 </html>

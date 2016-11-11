@@ -1,6 +1,13 @@
 
-
-
 <p>ShortURL: <b> <%= shortURL %></b> </p>
 
-w00t w00t! This text comes from urls_show.ejs
+<p>How would you like to edit this URL, my liege?</p>
+<p>My Favourite Sport Is: <%= myFavouriteSport %></p>
+
+<form method="POST" action="/urls/<%= updatedURL %>">
+  <input type="text" value="" name="myParam"></input>
+  <input type="text" value="<%= longURL %>" name="longURL"></input>
+  <input type="submit" value="Update"></input>
+</form>
+
+<br> <img src="knight.jpeg" style="width:304px;height:228px;">

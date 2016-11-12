@@ -33,13 +33,18 @@ app.get("/hello", (req, res) => {
 
 app.get("/urls", (req, res) => {
   let templateVars = {
-    urls: urlDatabase
+    urls: urlDatabase,
+    username: req.cookies["username"],
   };
   res.render("urls_index", templateVars);
 });
 
 app.get("/urls/new", (req, res) => {
-  res.render("urls_new");
+  let templateVars = {
+    urls: urlDatabase,
+    username: req.cookies["username"],
+  };
+  res.render("urls_new", templateVars);
 });
 
 app.post("/urls/create", (req, res) => {
@@ -59,17 +64,23 @@ app.get("/u/:shortURL", (req, res) => {
   res.redirect(longURL);
 });
 
-app.get("/urls/:id", (req, res) => {
+app.get("/urls/:id", (req, res) => {   //There's PROBABLY a problem here
   res.render("urls_show", {
     shortURL: req.params.id,
     longURL: urlDatabase[req.params.id],
     updatedURL: req.params.id,
+    username: req.cookies["username"],
   });
 });
 
 app.post("/urls/:id", (req, res) => {
   urlDatabase[req.params.id] = req.body.longURL;
-  res.redirect(`/urls`);
+  res.redirect('/urls');
+});
+
+app.post("/login", (req, res) => {
+  res.cookie('username', req.body.username);
+  res.redirect("/");
 });
 
 const generateRandomString = function() {
@@ -79,4 +90,4 @@ const generateRandomString = function() {
     randomString += possible.charAt(Math.floor(Math.random() * possible.length));
   }
   return randomString;
-}
+};

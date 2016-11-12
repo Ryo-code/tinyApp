@@ -2,6 +2,7 @@
 <p>ShortURL: <b> <%= shortURL %></b> </p>
 
 <p>How would you like to edit this URL, my liege?</p>
+<%= username %>
 
 <form method="POST" action="/urls/<%= updatedURL %>">
   <input type="text" value="<%= longURL %>" name="longURL"></input>

@@ -1,1 +1,18 @@
 <h3>Welcome to Tiny App! (... that was a special message from _header.ejs)</h3>
+
+<% if(username){ %>
+
+  <form method="POST" action="/logout">
+    <%= username %>
+    <input type="submit" value="Logout"></input>
+  </form>
+
+<% }else{ %>
+
+      <form method="POST" action="/login">
+        <input name="username">
+      </form>
+
+
+      <% } %>
+        <!--    <%   %>   -->

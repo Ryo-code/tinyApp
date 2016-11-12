@@ -83,6 +83,11 @@ app.post("/login", (req, res) => {
   res.redirect("/");
 });
 
+app.post("/logout", (req, res) => {
+  res.clearCookie("username");
+  res.redirect("/");
+});
+
 const generateRandomString = function() {
   let randomString = "";
   const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

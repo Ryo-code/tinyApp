@@ -1,22 +1,36 @@
 <h3>Welcome to Tiny App! (... that was a special message from _header.ejs)</h3>
 
-<% if(username){ %>
+<% if(email){ %>
 
   <form method="POST" action="/logout">
-    <%= username %>
-    <input type="submit" value="Logout"></input>
+    <p> Logged in as: <%= email %> </p>
+    <input type="submit" value="Logout">
   </form>
 
 <% }else{ %>
 
-  <p> Log in here </p>
-      <form method="POST" action="/login">
-        <input name="username">
-      </form>
+  New User? <a href="/register" class="button">Register</a> here
 
+  <!-- <form method="GET" action="/registration">
+    <label for="register"> New user? </label>
+    <input type="submit" value="Register">
+  </form> -->
+
+  <br>
+
+  Existing user? <a href="/login" class="button">Login in</a> here
+  <!-- <form method="GET" action="/login">
+    <label for="login"> Existing user? </label>
+    <input type="submit" value="Log in">
+  </form> -->
 
   <% } %>
 
-        <!--    <%   %>   -->
+<br> <br> <!-- Just to give space between the header and the rest of the page -->
 
-<br>
+
+<!-- ジュオーのexample:  -->
+<!-- <form method="GET" action="/login">
+       <label for="login"> Login :</label>
+       <input type="submit" value="Login">
+     </form> -->

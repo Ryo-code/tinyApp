@@ -13,12 +13,14 @@
   <ul>
     <% for(key in urls) { %>
       <li>
+        <%= urls[key].userId %>
         <form method="POST" action="/urls/<%= key %>/delete">
-          <%= key %> → <%= urls[key] %>
-            <% if(email){ %>
+          <%= key %> → <%= urls[key].url %>
+
+            <% if(username === urls[key].userId){ %>
               <a href="/urls/<%= key %>"> Edit</a>
               <input type="submit" value="Delete"></input>
-              <% }%>
+            <% }%>
         </form>
 
         <br>

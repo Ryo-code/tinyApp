@@ -5,7 +5,7 @@
 <%= email %>
 
 <form method="POST" action="/urls/<%= updatedURL %>">
-  <input type="text" value="<%= longURL %>" name="longURL"></input>
+  <input type="text" value="<%= longURL.url %>" name="longURL"></input>
   <input type="submit" value="Update"></input>
 </form>
 

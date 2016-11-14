@@ -13,17 +13,17 @@ app.use(cookieParser());
 app.set("view engine", "ejs");
 
 let urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com",
-  "tw293q": "http://www.twitter.com"
+  "b2xVn2": {userId: 'user2RandomID', url: "http://www.lighthouselabs.ca"},
+  "9sm5xK": {userId: 'someUser', url: "http://www.google.com"},
+  "tw293q": {userId: 'someone', url: "http://www.twitter.com"}
 };
 
 let usersDB = {
   "user2RandomID": {
     id: "user2RandomID",
-    email: "user2@example.com",
+    email: "abc@efg.com",
     password: "pass"
-  } //NOTE: Here is the users database. This It how it looks:
+  }
 };
 
 const generateRandomString = function() {
@@ -72,16 +72,6 @@ const checkIfEmailsAreDuplicates = (userEmail) => {
   return false;
 };
 
-// const checkForDuplicateEmails2 = (data, userEmail) => {
-//   for (let user in data){
-//     if(data.hasOwnProperty(user) && data[user].email === userEmail) {
-//       return user;
-//     }
-//   }
-//   return null;
-// };
-//NOTE: checkIfEmailsAreDuplicates(usersDB, ) <- definitely first parameter is going to be usersDB first
-
 app.get("/", (req, res) => {
   // res.end("Hello!");
   res.redirect('/urls');
@@ -100,11 +90,11 @@ app.get("/hello", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
-  console.log(req.cookies, "(If it says undefined it just means you're not logged in ;) )")
+  console.log(req.cookies, `(If it says undefined it just means you're not logged in ;) )`)
   let templateVars = {
     urls: urlDatabase,
-    username: req.cookies["user_id"], //NOTE: changed from "username" to "user_id"
-    email: grabEmailFromId(req.cookies.user_id),  //"abc@efg.com"
+    username: req.cookies["user_id"],
+    email: grabEmailFromId(req.cookies.user_id),
   };
   res.render("urls_index", templateVars);
 });
@@ -112,7 +102,7 @@ app.get("/urls", (req, res) => {
 app.get("/urls/new", (req, res) => {
   let templateVars = {
     urls: urlDatabase,
-    username: req.cookies["user_id"], //NOTE: changed from "username" to "user_id"
+    username: req.cookies["user_id"],
     email: grabEmailFromId(req.cookies.user_id)
   };
   res.render("urls_new", templateVars);
@@ -120,7 +110,11 @@ app.get("/urls/new", (req, res) => {
 
 app.post("/urls/create", (req, res) => {
   let shortURL = generateRandomString();
-  urlDatabase[shortURL] = req.body.longURL;
+  const data = {
+    url: req.body.longURL,
+    userId: req.cookies["user_id"]
+  };
+  urlDatabase[shortURL] = data;
   res.redirect(`/urls`);
 });
 
@@ -140,7 +134,7 @@ app.get("/urls/:id", (req, res) => {
     shortURL: req.params.id,
     longURL: urlDatabase[req.params.id],
     updatedURL: req.params.id,
-    email: grabEmailFromId(req.cookies.user_id) //"abc@efg.com"
+    email: grabEmailFromId(req.cookies.user_id)
   });
 });
 
@@ -153,13 +147,12 @@ app.get("/login", (req, res) => {
   res.render('login');
 });
 
-app.post("/login", (req, res) => { //for UPDATE THE LOGIN HANDLER
+app.post("/login", (req, res) => {
   if (req.body.email === "" || req.body.password === "") {
     res.status(400).end("Please enter a valid email & password");
   } else if (!checkIfUserExists(req.body.email, req.body.password)){
     res.status(400).end("This user doesn't exists, you scoundrel!")
   }
-  //NOTE:use bcrypt here~~~~~~~
   let userId = grabIdFromEmail(req.body.email);
   res.cookie('user_id', userId);
 

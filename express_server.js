@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+const bcrypt = require("bcrypt-nodejs");
 const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser');
 app.use(bodyParser.urlencoded({
@@ -50,12 +51,16 @@ const grabEmailFromId = (userID) => {
   }
 };
 
-const checkForExistingUsersByEmail = (userEmail) => {
+const checkIfUserExists = (userEmail, userPassword) => {
   for (let user in usersDB){
     if(usersDB[user].email === userEmail){
-      return usersDB[user];
+      if(bcrypt.compareSync(userPassword, usersDB[user].password)){ //inherent bcrypt function, checks if two things are the same
+      // if(usersDB[user].password === userPassword)
+        return true;
+      }
     }
   }
+  return false;
 };
 
 const checkIfEmailsAreDuplicates = (userEmail) => {
@@ -99,7 +104,7 @@ app.get("/urls", (req, res) => {
   let templateVars = {
     urls: urlDatabase,
     username: req.cookies["user_id"], //NOTE: changed from "username" to "user_id"
-    email: grabEmailFromId(req.cookies.user_id)  //"abc@efg.com"
+    email: grabEmailFromId(req.cookies.user_id),  //"abc@efg.com"
   };
   res.render("urls_index", templateVars);
 });
@@ -108,6 +113,7 @@ app.get("/urls/new", (req, res) => {
   let templateVars = {
     urls: urlDatabase,
     username: req.cookies["user_id"], //NOTE: changed from "username" to "user_id"
+    email: grabEmailFromId(req.cookies.user_id)
   };
   res.render("urls_new", templateVars);
 });
@@ -150,7 +156,7 @@ app.get("/login", (req, res) => {
 app.post("/login", (req, res) => { //for UPDATE THE LOGIN HANDLER
   if (req.body.email === "" || req.body.password === "") {
     res.status(400).end("Please enter a valid email & password");
-  } else if (!checkForExistingUsersByEmail(req.body.email)){
+  } else if (!checkIfUserExists(req.body.email, req.body.password)){
     res.status(400).end("This user doesn't exists, you scoundrel!")
   }
   //NOTE:use bcrypt here~~~~~~~
@@ -170,7 +176,7 @@ app.get("/register", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-  const password = req.body.password;
+  const password = bcrypt.hashSync(req.body.password);
   const email = req.body.email;
   const userID = generateRandomString();
 

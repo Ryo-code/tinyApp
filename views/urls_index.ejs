@@ -3,6 +3,7 @@
 
 <head>
   <% include ../views/partials/_header %>
+
     <title>TinyApp</title>
 
 </head>
@@ -13,16 +14,21 @@
     <% for(key in urls) { %>
       <li>
         <form method="POST" action="/urls/<%= key %>/delete">
-          <%= key %> →
-            <%= urls[key] %>
+          <%= key %> → <%= urls[key] %>
+            <% if(email){ %>
               <a href="/urls/<%= key %>"> Edit</a>
               <input type="submit" value="Delete"></input>
+              <% }%>
         </form>
+
         <br>
       </li>
       <% } %>
   </ul>
-  <p> Create a new <a href="/urls/new"> shortURL</a> here!</p>
+
+  <% if(email){ %>
+    <p> Create a new <a href="/urls/new"> shortURL</a> here!</p>
+  <% }%>
 
 </body>
 

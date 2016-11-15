@@ -8,12 +8,11 @@
 
 </head>
 
-<body>
+<body background="/BGimage.jpg">
 
   <ul>
     <% for(key in urls) { %>
       <li>
-        <%= urls[key].userId %>
         <form method="POST" action="/urls/<%= key %>/delete">
           <%= key %> → <%= urls[key].url %>
 

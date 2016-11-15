@@ -1,12 +1,12 @@
-
-<p>ShortURL: <b> <%= shortURL %></b> </p>
+<p>
+  ShortURL: <b> <%= shortURL %></b> </p>
 
 <p>How would you like to edit this URL, my liege?</p>
 <%= email %>
 
-<form method="POST" action="/urls/<%= updatedURL %>">
-  <input type="text" value="<%= longURL.url %>" name="longURL"></input>
-  <input type="submit" value="Update"></input>
-</form>
+  <form method="POST" action="/urls/<%= updatedURL %>">
+    <input type="text" value="<%= longURL.url %>" name="longURL"></input>
+    <input type="submit" value="Update"></input>
+  </form>
 
-<br> <img src="knight.jpeg" style="width:304px;height:228px;">
+  <br> <img src="/knight.jpeg" style="width:300px;height:350px;">
